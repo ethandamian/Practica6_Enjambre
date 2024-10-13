@@ -4,7 +4,7 @@ from _thread import *
 
 from RPSGame import RPSGame
 
-server = "10.11.250.207"
+server = socket.gethostbyname(socket.gethostname())
 port = 5555
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

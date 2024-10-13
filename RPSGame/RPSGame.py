@@ -35,27 +35,20 @@ class RPSGame:
         p2 = self.moves[1].upper()[0]
 
         winner = -1
-        # if p1 == 'R' and p2 == 'S':
-        #     winner = 0
-        # elif p1 == 'P' and p2 == 'R':
-        #     winner = 0
-        # elif p1 == 'S' and p2 == 'P':
-        #     winner = 0
-        # elif p2 == 'R' and p1 == 'S':
-        #     winner = 1
-        # elif p2 == 'P' and p1 == 'R':
-        #     winner = 1
-        # elif p2 == 'S' and p1 == 'P':
-        #     winner = 1
-
-        winning_combinations = {('R', 'S'), ('P', 'R'), ('S', 'P')}
-
-        if (p1, p2) in winning_combinations:
+        if p1 == "R" and p2 == "S":
             winner = 0
-        else:
+        elif p1 == "S" and p2 == "R":
             winner = 1
+        elif p1 == "P" and p2 == "R":
+            winner = 0
+        elif p1 == "R" and p2 == "P":
+            winner = 1
+        elif p1 == "S" and p2 == "P":
+            winner = 0
+        elif p1 == "P" and p2 == "S":
+            winner = 1
+
         
-        return winner
 
     def reset_moves(self):
         self.player1Moved = False
