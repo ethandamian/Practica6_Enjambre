@@ -13,7 +13,9 @@ def threaded_client(conn, game):
             if not data:
                 break
             else:
-                if data != "get":
+                if data == "reset":
+                    game.reset()
+                elif data != "get":
                     game.guess(data)
                 conn.sendall(pickle.dumps(game.__dict__))  # Enviar el estado actualizado
         except:
@@ -22,7 +24,7 @@ def threaded_client(conn, game):
     conn.close()
 
 # Configuración del servidor
-server = "192.168.1.91"
+server = "10.215.9.175"#"192.168.1.91"
 port = 5555
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
