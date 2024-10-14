@@ -50,3 +50,12 @@ class HangmanGame:
     # Verificar si el jugador ha perdido
     def has_lost(self):
         return self.tries_left <= 0
+    
+    # Reiniciar el juego
+    def reset(self):
+        self.word = random.choice(word_list)
+        self.word_display = ["_" for _ in self.word]
+        self.incorrect_letters = []
+        self.tries_left = 10
+        self.terminated = False
+        self.won = False

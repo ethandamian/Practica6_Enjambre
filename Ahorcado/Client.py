@@ -1,5 +1,7 @@
 import pygame
 from network import Network
+from Button import Button
+
 
 pygame.font.init()
 
@@ -8,6 +10,9 @@ width = 800
 height = 600
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Ahorcado")
+
+game_over = False
+reset = Button((0, 255, 0), 300, 400, 200, 50, "Reiniciar")
 
 # Dibujar el estado actual del juego
 def redraw_window(win, game_data):
@@ -41,15 +46,17 @@ def redraw_window(win, game_data):
         global game_over
         game_over = True
 
+        reset.draw(win, (0, 0, 0))
+
     pygame.display.update()
 
 
-game_over = False
 
 def main():
     run = True
     n = Network()
     clock = pygame.time.Clock()
+    global game_over
 
     while run:
         clock.tick(60)
@@ -69,6 +76,17 @@ def main():
                 letter = pygame.key.name(event.key)
                 if len(letter) == 1 and letter.isalpha():  # Verificar que solo sea una letra
                     n.send(letter)  # Enviar la letra al servidor
+
+            
+
+            if event.type == pygame.MOUSEBUTTONDOWN and game_over:
+                pos = pygame.mouse.get_pos()
+                if reset.is_over(pos):
+                    n.send("reset")
+            
+            game_over = False
+            print(game_over)
+
         
         redraw_window(win, game_data)
 
