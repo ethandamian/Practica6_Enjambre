@@ -21,7 +21,8 @@ def threaded_client(conn, p, gameId):
                     game.reset()
                     conn.sendall(pickle.dumps(game))
                 else:
-                    if game.turn == 0 and game.make_move(0, int(data)):  # Humano
+                    # Humano
+                    if game.turn == 0 and game.make_move(0, int(data)):
                         game.turn = 1  # Turno de la IA
                         if not game.check_winner():
                             ai_move = game.best_move()
@@ -29,7 +30,6 @@ def threaded_client(conn, p, gameId):
                             if game.check_winner():
                                 game.turn = -1
                             game.turn = 0
-                        
 
                     conn.sendall(pickle.dumps(game))
             else:
@@ -40,8 +40,11 @@ def threaded_client(conn, p, gameId):
     del games[gameId]
     conn.close()
 
-server = "192.168.1.91"
+
+# server = "192.168.1.91"
+server = "localhost"
 port = 5555
+
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((server, port))
@@ -60,4 +63,5 @@ while True:
     games[idCount] = Game(idCount)
     games[idCount].ready = True
 
-    _thread.start_new_thread(threaded_client, (conn, 0, idCount))  # 0 representa al jugador humano
+    # 0 representa al jugador humano
+    _thread.start_new_thread(threaded_client, (conn, 0, idCount))
