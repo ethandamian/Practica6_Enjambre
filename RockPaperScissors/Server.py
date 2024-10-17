@@ -4,7 +4,7 @@ import pickle
 from game import Game
 
 # Define the ip address of the server and the port
-server = "192.168.1.91"
+server = "localhost"
 port = 5555 # Safe port
 
 # Create a socket
