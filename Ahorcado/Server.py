@@ -4,8 +4,11 @@ import pickle
 from game import HangmanGame
 
 # Servidor que maneja los clientes
+
+
 def threaded_client(conn, game):
-    conn.send(pickle.dumps(game.__dict__))  # Enviar el estado inicial del juego
+    # Enviar el estado inicial del juego
+    conn.send(pickle.dumps(game.__dict__))
 
     while True:
         try:
@@ -17,14 +20,17 @@ def threaded_client(conn, game):
                     game.reset()
                 elif data != "get":
                     game.guess(data)
-                conn.sendall(pickle.dumps(game.__dict__))  # Enviar el estado actualizado
+                # Enviar el estado actualizado
+                conn.sendall(pickle.dumps(game.__dict__))
         except:
             break
 
     conn.close()
 
+
 # Configuración del servidor
-server = "10.215.9.175"#"192.168.1.91"
+# server = "10.215.9.175"#"192.168.1.91"
+server = "localhost"
 port = 5555
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
