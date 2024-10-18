@@ -12,13 +12,14 @@ Se realizaron 4 juegos para esta práctica:
 - Ahorcado
 - Piedra papel o tijera
 - Gato
+</br>
 Cada juego fue realizado en python con sockets y pygame, siguiendo una estructura Servidor -> (Cliente, Network) donde Network se encarga de conectar cada cliente al servidor, y el cliente realiza las acciones de un jugador. 
 
 ## Requisitos
 
 Para correr cada juego, se necesita tener instalado **pygame**, con el comando
   ```bash
-  pip instal pygame
+  pip install pygame
   ```
 
 ## Como jugar
