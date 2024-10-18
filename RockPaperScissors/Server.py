@@ -1,3 +1,4 @@
+import random
 import socket
 import _thread
 import pickle
@@ -25,26 +26,31 @@ idCount = 0 # The number of clients connected
 
 def threaded_client(conn, p, gameId):
     global idCount
-    conn.send(str.encode(str(p))) # Send the id of the player to the client
+    conn.send(str.encode(str(p)))  # Send the id of the player (0 for human, 1 for AI)
 
     reply = ""
     while True:
         try:
-            data = conn.recv(2048*2).decode() # Receive data from the client
-            if gameId in games: # If the game exists
-                game = games[gameId] 
+            data = conn.recv(2048*2).decode()  # Receive data from the client
+            if gameId in games:  # If the game exists
+                game = games[gameId]
 
-                if not data: # If we don't receive any data
+                if not data:  # If no data is received, exit the loop
                     break
                 else:
-                    if data == "reset": # If the client wants to reset the game
+                    if data == "reset":  # If the client wants to reset the game
                         game.resetWent()
-                    elif data != "get": # If the client is not asking for the data
-                        game.player(p, data)
+                    elif data != "get":  # If the client is not asking for the game state
+                        game.player(p, data)  # Player 0 makes their move
 
-                    reply = game
+                        # If the AI needs to make a move
+                        if p == 0 and not game.p2Went:
+                            ai_move = random.choice(["Rock", "Paper", "Scissors"])
+                            game.player(1, ai_move)  # AI is player 1
 
-                    conn.sendall(pickle.dumps(reply)) # Send data to the client
+                    reply = game  # Update the game state
+
+                    conn.sendall(pickle.dumps(reply))  # Send the updated game state to the client
             else:
                 break
         except:
@@ -64,14 +70,11 @@ while True:
     conn, addr = s.accept()
     print("Connected to:", addr)
     idCount += 1
-    p=0
-    gameId = (idCount - 1)//2 # Every 2 people that connect to the server we are going to have a new game
-    if idCount % 2 == 1: # If the number of clients connected is odd, we are going to create a new game
-        games[gameId] = Game(gameId)
-        print("Creating a new game...")
-    else:
-        games[gameId].ready = True
-        p = 1
+    p = 0  # Player 0 will always be the human player
+    gameId = idCount - 1  # Create a new game for each connection
 
+    games[gameId] = Game(gameId)
+    games[gameId].ready = True  # AI is always "ready"
 
-    _thread.start_new_thread(threaded_client, (conn, p, gameId)) # Start a new thread for the client
+    print("Creating a new game with AI...")
+    _thread.start_new_thread(threaded_client, (conn, p, gameId))  # Start a new thread for the client
