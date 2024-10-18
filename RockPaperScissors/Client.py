@@ -46,7 +46,7 @@ def redrawWindow(win,game, p):
         text = font.render("Your Move", 1, (0,0,0))
         win.blit(text, (80, 200))
 
-        text = font.render("Opponents", 1, (0,0,0))
+        text = font.render("IA", 1, (0,0,0))
         win.blit(text, (280, 200))
 
         move1 = game.get_player_move(0)
@@ -91,6 +91,7 @@ def main():
     run = True
     clock = pygame.time.Clock() # To control the frame rate of the game
     n = Network()
+    print("Player: ", n.getP()) 
     player = int(n.getP()) # Get the id of the player
     print("You are player", player)
     while run:
